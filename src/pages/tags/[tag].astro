@@ -1,0 +1,51 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+import BlogPostList from '@components/BlogPostList';
+import getAllTags from '@utils/getAllTags';
+import getPostsByTag from '@utils/getPostsByTag';
+import sortPosts from '@utils/sortPosts';
+import getPageTitle from '@utils/getPageTitle';
+
+export const getStaticPaths = async () => {
+  const posts = await Astro.glob('../posts/*.mdx');
+  const sortedPosts = sortPosts(posts);
+  const tags = getAllTags(sortedPosts);
+
+  return getPostsByTag(tags, sortedPosts);
+};
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+
+const heading = `Tag:${tag}`;
+const pageTitle = getPageTitle(heading);
+---
+
+<PageLayout pageTitle={pageTitle} heading={heading}>
+  <div
+    slot="desc"
+    class="text-zinc-700 dark:text-zinc-300 flex flex-col sm:flex-row sm:items-center"
+  >
+    <span class="pr-3">All the posts with the tag:</span>
+    <div class="flex items-center mt-4 sm:mt-0">
+      <code>#{tag}</code>
+      <a
+        class="text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+        href="/tags"
+        aria-label="Remove tag"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-7 h-7"
+          ><path
+            d="m7.757 7.757 8.486 8.486M7.757 16.243l8.486-8.486"
+            stroke="currentColor"
+            stroke-width="2"></path></svg
+        >
+      </a>
+    </div>
+  </div>
+  <BlogPostList posts={posts} />
+</PageLayout>

@@ -1,0 +1,63 @@
+---
+import TableOfContentsHeading from '@components/post/TableOfContentsHeading.astro';
+import generateToc from '@utils/generateToc';
+
+const { headings } = Astro.props;
+const toc = generateToc(headings);
+---
+
+<nav id="toc" class="sticky top-0 py-6">
+  <span class="block uppercase mb-3 font-semibold">Table of contents</span>
+  <div class="w-12 h-1 border-b-2 border-b-green-500"></div>
+  <ul class="mt-6 flex flex-col gap-3">
+    {toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
+  </ul>
+</nav>
+
+<script>
+  const registerIntersectionObserver = () => {
+    const pathname = window.location.pathname.split('/')[1];
+    if (pathname !== 'posts' && pathname !== 'drafts') {
+      return;
+    }
+
+    let activeSectionsId = [];
+    const observer = new IntersectionObserver((sections) => {
+      sections.forEach((section) => {
+        // Get heading element h2 tag
+        const headingElement = section.target.querySelector('h2');
+        if (!headingElement) {
+          return;
+        }
+
+        // Get id of current heading element
+        const id = headingElement.getAttribute('id');
+
+        // Set active sections
+        if (section.intersectionRatio > 0) {
+          activeSectionsId.push(id);
+        } else {
+          const indexToRemove = activeSectionsId.indexOf(id);
+          if (indexToRemove !== -1) {
+            activeSectionsId.splice(indexToRemove, 1);
+          }
+        }
+      });
+
+      // Active the first section and unactive the others
+      document.querySelectorAll(`nav#toc li a`).forEach((tocHeading) => {
+        const isActive = tocHeading.getAttribute('href') === '#' + activeSectionsId[0];
+        isActive ? tocHeading.classList.add('active') : tocHeading.classList.remove('active');
+      })
+    });
+
+    // Observe all the sections of the article
+    document.querySelectorAll('article section').forEach((section) => {
+      observer.observe(section);
+    });
+  };
+
+  registerIntersectionObserver();
+
+  document.addEventListener('astro:after-swap', registerIntersectionObserver);
+</script>

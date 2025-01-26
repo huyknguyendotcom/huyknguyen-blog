@@ -1,0 +1,333 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: 'Javascript unit testing 101 - Write your first test'
+pubDate: 2024-05-01
+description: 'Learn what is unit test and how to write unit test in JavaScript using Vitest.'
+author: Huy Nguyen
+featured: true
+tags: ['react', 'vitest', 'testing']
+---
+
+import { Image } from 'astro:assets';
+import Section from '../../components/markdown/Section.astro';
+import BlockCode from '../../components/markdown/BlockCode.astro';
+
+<Section type="intro">
+
+Imagation that you've coded a function that works perfectly. However, after a few months, you need to update the function to add a new feature. You make some changes, and everything seems to work fine. But when you re-test with some of the original cases and you realize that the function isn't performing as expected 😵‍💫 You spend hours debugging the code, trying to figure out what went wrong.
+
+At this moment, you wish you had written tests for the function. When the function changes, you could simply run the test case to ensure everything works as expected. This is a simple story, but we realize writing tests is important.
+
+There are many types of test: unit test, integration test, e2e test... In this series, I will focus on writing unit tests in JavaScript using Vitest. So...
+
+</Section>
+
+<Section>
+
+## What is unit test?
+
+Unit test is a type of testing that focuses on testing individual units of code. A unit is the smallest piece of code that can be isolated and tested. It can be a function, a class, or a module.
+
+The goal of unit testing is to verify that each unit of code works as expected. It helps to catch bugs early in the development process, and ensure that the code is working correctly.
+
+</Section>
+
+<Section>
+
+## Writting your own unit test function
+
+Before we start writing unit tests, let's write a simple function that we will test. Create a new file called `sum.js` in the `src` directory:
+
+<BlockCode fileName='src/sum.js'>
+
+```js
+export const sum = (a, b) => a + b;
+```
+
+</BlockCode>
+
+This function takes two numbers as arguments and returns the sum of the two numbers.
+
+Next, create a new file called `test.js` in the `src` directory and import the `sum` function:
+
+<BlockCode fileName='src/test.js'>
+
+```js
+import { sum } from '../sum';
+```
+
+</BlockCode>
+
+Create a function named `it` that takes a description and a function as arguments:
+
+<BlockCode fileName='src/test.js'>
+
+```js
+const it = (description, test) => {
+  try {
+    test();
+    console.log(`✅ ${description}`);
+  } catch (error) {
+    console.error(`❌ ${description}`);
+    console.error(error);
+  }
+};
+```
+
+</BlockCode>
+
+The `it` function runs the test function and logs the result to the console. If the test function throws an error, the `it` function logs the error to the console.
+
+Next, create a function named `expect` that takes a actual value as an argument and returns an object with a `toBe` method:
+
+<BlockCode fileName='src/test.js'>
+
+```js
+const expect = (value) => ({
+  toBe: (expected) => {
+    if (value !== expected) {
+      throw new Error(`Expected ${value} to be ${expected}`);
+    }
+  },
+});
+```
+
+</BlockCode>
+
+The `expect` function returns an object with a `toBe` method that compares the value with the expected value. If the values are not equal, the `toBe` method throws an error.
+
+Finally, write test cases for the `sum` function:
+
+<BlockCode fileName='src/test.js'>
+
+```js
+it('should add two positive numbers correctly', () => {
+  const result = sum(1, 2);
+  expect(result).toBe(3);
+});
+
+it('should add two negative numbers correctly', () => {
+  const result = sum(-1, -2);
+  expect(result).toBe(-3);
+});
+```
+
+</BlockCode>
+
+These test cases use the `it` function to define a test case with a description and a test function. The test function calls the `sum` function with two numbers and uses the `expect` function to make an assertion about the result.
+
+Run the test by running the following command:
+
+<BlockCode>
+
+```bash
+node src/test.js
+```
+
+</BlockCode>
+
+You should see the following output in the console:
+
+<Image
+  src='https://res.cloudinary.com/cloudinaryassets/image/upload/v1714614611/astro-blog/javascript-unit-testing-write-your-first-test/tmdtu4io1elgtsibwnpd.webp'
+  alt='Test results in the console'
+  height='1790'
+  width='210'
+/>
+
+You should see all the tests passed, the `sum` function performs as expected. Try some mistakes in the `sum` function by adding `1` to the result:
+
+<BlockCode fileName='src/sum.js'>
+
+```js
+export const sum = (a, b) => a + b + 1;
+```
+
+</BlockCode>
+
+Run the test again and you should see the failed tests in the console:
+
+<Image
+  src='https://res.cloudinary.com/cloudinaryassets/image/upload/v1714614611/astro-blog/javascript-unit-testing-write-your-first-test/sytpvrrn5mm6llxxji3h.webp'
+  alt='Test results in the console with error'
+  height='1814'
+  width='540'
+/>
+
+</Section>
+
+<Section>
+
+## Setting up Vitest
+
+In the previous section, we wrote our own test function to test the `sum` function. Thanksfully, there are many testing frameworks available that make writing tests easier and more efficient. In this post, we will use [Vitest](https://vitest.dev/), a lightweight and fast testing framework for JavaScript.
+
+To get started with Vitest, you need to install it using npm:
+
+<BlockCode>
+
+```bash
+npm install --save-dev vitest
+```
+
+</BlockCode>
+
+</Section>
+
+<Section>
+
+## Writing your first test with Vitest
+
+Once you have installed Vitest, you can create a test file by creating a new file with a `.test.js` extension. For example, you can create a test file called `sum.test.js` to test the `sum` function.
+
+<BlockCode fileName='src/tests/sum.test.js'>
+
+```javascript
+import { describe, it, expect } from 'vitest';
+import { sum } from '../sum';
+
+// describe() is a test suite
+describe('sum', () => {
+  // it() is a test case
+  it('should adds positive numbers correctly', () => {
+    // expect() is an assertion
+    expect(sum(1, 2)).toBe(3);
+  });
+
+  it('should adds negative numbers correctly', () => {
+    expect(sum(-1, -2)).toBe(-3);
+  });
+});
+```
+
+</BlockCode>
+
+You should see the `it` and `expect` functions are similar to the functions we wrote in the previous section. By writting your own version, you can understand how the testing framework works.
+
+The `describe` function in the `src/tests/sum.test.js` is used to group test cases together. This is useful when you have multiple test cases for the same function.
+
+</Section>
+
+<Section>
+
+## Running your tests
+
+To run your test, you add a `test` script to your `package.json` file:
+
+<BlockCode>
+
+```json
+{
+  "scripts": {
+    "test": "vitest"
+  }
+}
+```
+
+</BlockCode>
+
+Then you can run the test by running the following command:
+
+<BlockCode>
+
+```bash
+npm run test
+```
+
+</BlockCode>
+
+Vitest will look for all files with a `.test.js` extension in the current directory and run them.
+
+<Image
+  src='https://res.cloudinary.com/cloudinaryassets/image/upload/v1714552318/astro-blog/javascript-unit-testing-write-your-first-test/miyqpkckx2xbku1u53ff.webp'
+  alt='Vitest test results'
+  height='1902'
+  width='1906'
+/>
+
+Try to make a mistake in the `sum` function:
+
+<BlockCode fileName='src/sum.js'>
+
+```javascript
+export const sum = (a, b) => a + b + 1;
+```
+
+</BlockCode>
+
+And run the test again:
+
+<Image
+  src='https://res.cloudinary.com/cloudinaryassets/image/upload/v1714552318/astro-blog/javascript-unit-testing-write-your-first-test/dwj9hk7ywylurr0t16ua.webp'
+  alt='Vitest test results with error'
+  height='1914'
+  width='1892'
+/>
+
+You see the expected value is `-3` but recevied `-2`. The test failed because the `sum` function is not working as expected. You need to revert the function to its original state to pass the test.
+
+</Section>
+
+<Section>
+
+## Vitest UI
+
+Vitest comes with a built-in UI that displays the test results in the browser. To use the UI, you need to install the `@vitest/ui` package:
+
+<BlockCode>
+
+```bash
+npm install --save-dev @vitest/ui
+```
+
+</BlockCode>
+
+Then, add the new `vitest-ui` script to your `package.json` file:
+
+<BlockCode>
+
+```json
+{
+  "scripts": {
+    "test": "vitest",
+    "test-ui": "vitest --ui"
+  }
+}
+```
+
+</BlockCode>
+
+Run the following command to open the UI:
+
+<BlockCode>
+
+```bash
+npm run test-ui
+```
+
+</BlockCode>
+
+This will open a new browser window with the test results.
+
+<Image
+  src='https://res.cloudinary.com/cloudinaryassets/image/upload/v1714552318/astro-blog/javascript-unit-testing-write-your-first-test/ohuflletgek6vgie7woh.webp'
+  alt='Vitest UI'
+  height='374'
+  width='2036'
+/>
+
+More information about Vitest UI can be found [here](https://vitest.dev/guide/ui.html).
+
+</Section>
+
+<Section>
+
+## Conclusion
+
+Through this post, you learned what is unit test and how to write your first unit test in JavaScript using Vitest. You also can use the Vitest UI to view the test results in the browser.
+
+Nowadays, there are many AI tools like ChatGPT, Github Copilot, and others that can help us write tests. This can save your time and effort. However, it's important to understand how testing frameworks work so you can write better tests. Also, you need to know how to write good assertions to make your tests more effective.
+
+In the next tutorial, we will learn how to do it by using the right matchers.
+
+</Section>
