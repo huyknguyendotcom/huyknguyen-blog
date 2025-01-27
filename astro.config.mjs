@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   integrations: [mdx(), tailwind(), react(), sitemap()],
-  site: 'https://blog.huynk.dev',
+  site: 'https://blog.huyknguyen.com',
   markdown: {
     shikiConfig: {
       theme: 'material-theme-darker',
