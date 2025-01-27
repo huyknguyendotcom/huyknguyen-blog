@@ -3,7 +3,7 @@ layout: ../../layouts/MarkdownPostLayout.astro
 title: 'How to Undo Commits Safely in Git: Git Reset and Git Revert Explained'
 pubDate: 2024-12-17
 description: 'Understand how to safely undo commits in Git with git reset and git revert. Explore their differences, when to use each command, and how they affect your commit history.'
-author: Huy Nguyen
+author: Huy K. Nguyen
 featured: true
 tags: ['git', 'git-reset', 'git-revert']
 ---
@@ -38,16 +38,16 @@ Before getting started, it's important to understand Git's internal state manage
 3. **Commit History**: This is the timeline of saved changes in your project.
    When you use the `git commit` command, it takes the changes from the **Staging Index** and adds them to this history as a new commit.
 
-<Video src='https://res.cloudinary.com/cloudinaryassets/video/upload/v1734441215/astro-blog/git-undo-commits/eadenlvdejsdbt6ixefx.mov' />
+<Video src="https://res.cloudinary.com/dpw0jnwee/video/upload/v1737946638/git-three-tree_yiuk8p.mov" />
 
 The animation above demonstrates Git's three-tree structure by showing the creation of `file1.js` and committing it as `C1`. We add two more examples: `file2.js` as a `C2` commit and `file3.js` as a `C3` commit.
 These three commits will be used throughout the article as we explore `git reset` and `git revert` commands.
 
 <Image
-  src='https://res.cloudinary.com/cloudinaryassets/image/upload/v1734441213/astro-blog/git-undo-commits/kz95mofwqfyw0zngexvy.webp'
+  src="https://res.cloudinary.com/dpw0jnwee/image/upload/v1737946492/git-three-tree_q2noaf.webp"
   alt="Visualizing Git's three-tree with three commits"
-  height='1294'
-  width='1378'
+  height="1294"
+  width="1378"
 />
 
 </Section>
@@ -58,7 +58,7 @@ These three commits will be used throughout the article as we explore `git reset
 
 The `git reset` command allows you to undo changes in your working directory by moving the branch tip back to a specific commit and discarding all commits made after that point.
 
-<Video src='https://res.cloudinary.com/cloudinaryassets/video/upload/v1734441214/astro-blog/git-undo-commits/wqz9ixebshcgsz3a958x.mov' />
+<Video src="https://res.cloudinary.com/dpw0jnwee/video/upload/v1737946573/git-reset-head-1_lmdic0.mov" />
 
 After running the command `git reset HEAD~1`, you'll notice two changes:
 
@@ -74,15 +74,15 @@ This is where the git reset flags come into play. Bypassing one of the following
 
 - `–-soft`: It undoes the commits in the history and places the changes back in the **Staging Index**, ready to be committed again if needed.
 
-<Video src='https://res.cloudinary.com/cloudinaryassets/video/upload/v1734441215/astro-blog/git-undo-commits/sylrkwy9peksmqn7gxal.mov' />
+<Video src="https://res.cloudinary.com/dpw0jnwee/video/upload/v1737946694/git-reset-soft_i6qtmj.mov" />
 
 - `—-mixed` (this is the **default option**): It is similar to `—-soft` but also clears the **Staging Index**. This means any changes from the discarded commits are left unstaged in the **Working Directory**, requiring you to re-add them before re-committing.
 
-<Video src='https://res.cloudinary.com/cloudinaryassets/video/upload/v1734441215/astro-blog/git-undo-commits/gvvly27m5gqy0w72tirn.mov' />
+<Video src="https://res.cloudinary.com/dpw0jnwee/video/upload/v1737946737/git-reset-mixed_gwpalr.mov" />
 
 - `--hard`: This option clears all changes from both the **Staging Index** and **Working Directory** and resets the codebase to match the specified commit without making any modifications.
 
-<Video src='https://res.cloudinary.com/cloudinaryassets/video/upload/v1734441214/astro-blog/git-undo-commits/kf9ibuyteckjqpbkfawq.mov' />
+<Video src="https://res.cloudinary.com/dpw0jnwee/video/upload/v1737946772/git-reset-hard_cyxchi.mov" />
 
 By using `git reset`, you've successfully undone a specific commit.
 However, try to push these changes to the remote repository with a regular `git push`.
@@ -100,7 +100,7 @@ To avoid these problems, let's explore a safer alternative:
 The `git revert` command is an undo command, but it doesn't work like the git reset.
 Instead of removing a commit from the project history, it creates a new one containing the inverse of the original changes.
 
-<Video src='https://res.cloudinary.com/cloudinaryassets/video/upload/v1734441215/astro-blog/git-undo-commits/nouncup7goc0vwv4rgdp.mov' />
+<Video src="https://res.cloudinary.com/dpw0jnwee/video/upload/v1737946807/git-revert-head_upqdei.mov" />
 
 The result of running the command `git revert HEAD` is a new commit that undoes the changes made in the `C3` commit.
 Since the `C3` commit added `file3.js`, the revert will effectively delete this file.
@@ -109,7 +109,7 @@ In short, running `git revert HEAD` will bring your code back to its state at th
 You can prevent `git revert` from automatically creating a new commit by using the `-n` or `–no-commit` flag.
 With this option, the inverse changes are placed in the **Staging Index** and **Working Directory**, allowing you to review or modify them before committing.
 
-<Video src='https://res.cloudinary.com/cloudinaryassets/video/upload/v1734441216/astro-blog/git-undo-commits/gcbf26dnufcgmptfkbks.mov' />
+<Video src="https://res.cloudinary.com/dpw0jnwee/video/upload/v1737946837/git-revert-no-commit_mrjmnr.mov" />
 
 The `git revert` command allows you to go back to previous commits without removing any mistake commits.
 It doesn't re-write the project history.

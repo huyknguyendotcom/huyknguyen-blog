@@ -9,7 +9,7 @@ export const DEFAULT_PAGE_TITLE = 'Blog huyknguyendotcom';
 export const DEFAULT_PAGE_DESC =
   'Explore the world of web development, JavaScript, and more with insightful articles and tutorials.';
 
-export const DEFAULT_PAGE_AUTHOR = 'Huy Nguyen';
+export const DEFAULT_PAGE_AUTHOR = 'Huy K. Nguyen';
 
 export const DEFAULT_SOCIAL_IMAGE_URL = 'huynk-og.webp';
 

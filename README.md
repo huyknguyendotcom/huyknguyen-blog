@@ -34,5 +34,5 @@ Here are some key features of this blog:
 
 ## 👀 Feedback
 
-If you have any feedback, you can contact me via kimhuy011199@gmail.com.
+If you have any feedback, you can contact me via huyknguyendotcom@gmail.com.
 Alternatively, feel free to open an issue if you find bugs or want to request new features.
