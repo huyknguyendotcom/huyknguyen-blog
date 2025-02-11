@@ -35,8 +35,7 @@ const Search = ({ posts }) => {
 
     // Focus input
     setTimeout(() => {
-      inputRef.current.selectionStart = inputRef.current.selectionEnd =
-        searchStr?.length || 0;
+      inputRef.current.selectionStart = inputRef.current.selectionEnd = searchStr?.length || 0;
     }, 50);
   }, []);
 
@@ -54,8 +53,7 @@ const Search = ({ posts }) => {
     if (inputValue.length > 0) {
       const searchParams = new URLSearchParams(window.location.search);
       searchParams.set('q', inputValue);
-      const newRelativePathQuery =
-        window.location.pathname + '?' + searchParams.toString();
+      const newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
       history.replaceState(history.state, '', newRelativePathQuery);
     } else {
       history.replaceState(history.state, '', window.location.pathname);
@@ -69,11 +67,7 @@ const Search = ({ posts }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <SearchInput
-        inputValue={inputValue}
-        handleChange={handleChange}
-        inputRef={inputRef}
-      />
+      <SearchInput inputValue={inputValue} handleChange={handleChange} inputRef={inputRef} />
       <SearchResultDesc resultLength={result.length} inputValue={inputValue} />
       <BlogPostList posts={result} />
     </div>

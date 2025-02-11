@@ -6,9 +6,7 @@ const categoryId = import.meta.env.PUBLIC_CATEGORY_ID;
 
 const Comment = () => {
   const initGiscus = () => {
-    const currentTheme = document
-      .querySelector('html')
-      .getAttribute('data-theme');
+    const currentTheme = document.querySelector('html').getAttribute('data-theme');
 
     const giscusAttributes = {
       src: 'https://giscus.app/client.js',
@@ -36,7 +34,11 @@ const Comment = () => {
     initGiscus();
   }, []);
 
-  return <div className="giscus mx-auto lg:w-4/5 relative pt-4 md:pt-8"></div>;
+  return (
+    <div className="giscus mx-auto lg:w-4/5 relative pt-4 md:pt-8">
+      <div id="giscus"></div>
+    </div>
+  );
 };
 
 export default Comment;

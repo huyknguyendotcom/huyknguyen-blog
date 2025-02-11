@@ -6,9 +6,7 @@ const getRecentPosts = (posts, currentPost) => {
     return [];
   }
 
-  const currentPostIndex = posts.findIndex(
-    (post) => post.url === currentPost.url
-  );
+  const currentPostIndex = posts.findIndex((post) => post.url === currentPost.url);
 
   if (currentPostIndex === 0) {
     return [posts[1], posts[2]];
@@ -23,15 +21,11 @@ const getRecentPosts = (posts, currentPost) => {
 
 const getRelatedPosts = (posts, currentPost) => {
   // 1. Get posts list has the same tag with current post (currentTagPosts)
-  const currentTagPosts = posts.filter(
-    (post) => post.frontmatter.tags[0] === currentPost.tags[0]
-  );
+  const currentTagPosts = posts.filter((post) => post.frontmatter.tags[0] === currentPost.tags[0]);
 
   // 2.1. If currentTagPosts length > 2 => sort currentTagPosts => get recent posts
   // 2.2. If currentTagPosts length <= 2 => sort posts => get recent posts
-  const sortedPosts = sortPosts(
-    currentTagPosts.length > 2 ? currentTagPosts : posts
-  );
+  const sortedPosts = sortPosts(currentTagPosts.length > 2 ? currentTagPosts : posts);
   return getRecentPosts(sortedPosts, currentPost);
 };
 
