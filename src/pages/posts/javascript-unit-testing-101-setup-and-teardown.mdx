@@ -1,0 +1,138 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: 'Javascript unit testing 101 - Setup and teardown'
+pubDate: 2025-02-15
+description: 'Learn how to setup and teardown in JavaScript unit testing using Vitest.'
+author: Huy K. Nguyen
+featured: true
+tags: ['react', 'vitest', 'testing']
+---
+
+import { Image } from 'astro:assets';
+import Section from '../../components/markdown/Section.astro';
+import BlockCode from '../../components/markdown/BlockCode.astro';
+
+<Section type="intro">
+
+Imagine you're building an online shopping cart system. Your test adds an item to the cart, and everything works fine. But in the next test, the cart already contains that item—causing unexpected failures. Why? Because the previous test left behind data that wasn't cleaned up. This is where setup and teardown become essential—they reset the environment before each test, ensuring a clean slate every time, preventing interference, and keeping your tests reliable.
+
+In this guide, I'll explore what setup and teardown are, why they matter, and how Vitest handles them. By the end, you'll have a solid grasp of how to structure your tests to be clean, efficient, and predictable.
+
+</Section>
+
+<Section>
+
+## Understanding setup and teardown
+
+When running tests, you often need to prepare an environment before executing each test case. Similarly, after a test runs, you may need to clean up resources to prevent interference with other tests.
+
+- **Setup**: Code that runs before a test to create the necessary conditions for testing.
+
+- **Teardown**: Code that runs after a test to clean up resources and reset states.
+
+Think of them as the backstage crew of a play—resetting the stage before each scene so everything runs smoothly.
+
+</Section>
+
+<Section>
+
+## Vitest setup and teardown hooks
+
+Vitest provides built-in lifecycle hooks to handle setup and teardown. These hooks allow you to execute code before and after tests at different levels in a predictable order:
+
+- `beforeAll()` runs once before all tests.
+
+- `beforeEach()` runs before each individual test.
+
+- `afterEach()` runs after each individual test.
+
+- `afterAll()` runs once after all tests have completed.
+
+Let's see these hooks in action with a practical example.
+
+<BlockCode fileName='src/tests/setup-teardown.test.js'>
+
+```js
+import { afterAll, afterEach, beforeAll, beforeEach, expect, test } from 'vitest';
+let db;
+
+// beforeAll will run once before all the tests
+beforeAll(() => {
+  db = { connected: true };
+  console.log('beforeAll - Database connected');
+});
+
+// beforeEach will run before each test
+beforeEach(() => {
+  db.cart = [];
+  console.log('beforeEach - Database reset for test');
+});
+
+// afterEach will run after each test
+afterEach(() => {
+  db.cart = [];
+  console.log('afterEach - Database cleaned up');
+});
+
+// afterAll will run once after all the tests
+afterAll(() => {
+  db = null;
+  console.log('afterAll - Database disconnected');
+});
+
+test('should add data to the database', () => {
+  console.log('testcase - Running test 1');
+  db.cart.push('item1');
+  expect(db.cart.length).toBe(1);
+});
+
+test('should remove data from the database', () => {
+  console.log('testcase - Running test 2');
+  db.cart.push('item1');
+  db.cart.pop();
+  expect(db.cart.length).toBe(0);
+});
+```
+
+</BlockCode>
+
+The output of the above code will be:
+
+<BlockCode fileName='output'>
+
+```js
+beforeAll - Database connected
+beforeEach - Database reset for test
+testcase - Running test 1
+afterEach - Database cleaned up
+beforeEach - Database reset for test
+testcase - Running test 2
+afterEach - Database cleaned up
+afterAll - Database disconnected
+```
+
+</BlockCode>
+
+Now, you can see that the database is connected before all tests, reset before each test, and disconnected after all tests. All the tests are independent of each other.
+
+Next, let's see some best practices when using setup and teardown hooks:
+
+- Use `beforeEach` when tests require similar setup steps.
+
+- Use `beforeAll` only when an expensive operation (like opening a database connection) is needed once.
+
+- Keep `afterEach` and `afterAll` for cleanup tasks to prevent resource leaks.
+
+</Section>
+
+<Section>
+
+## Conclusion
+
+Setup and teardown help keep tests independent by ensuring each one starts with a clean state. This prevents unexpected failures, reduces debugging time, and makes it easier to identify real issues in your code.
+
+- Use **`beforeEach`** and **`afterEach`** to handle frequent setup/cleanup.
+
+- Use **`beforeAll`** and **`afterAll`** for one-time expensive operations.
+
+</Section>

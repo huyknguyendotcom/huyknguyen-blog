@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/MarkdownPostLayout.astro
 title: 'Javascript unit testing 101 - Positive and negative testing'
-pubDate: 2024-05-03
+pubDate: 2025-02-12
 description: 'Learn how to write positive and negative test cases, boundary testing and code coverage in JavaScript unit testing using Vitest.'
 author: Huy K. Nguyen
 featured: true
@@ -48,20 +48,11 @@ Here are some examples of positive and negative test cases:
 <BlockCode fileName='src/tests/positve-negative.test.js'>
 
 ```javascript
-import { isLuckyNumber } from '../positve-negative';
-
-describe('isLuckyNumber', () => {
+describe('positive and negative test cases', () => {
   // Positive test cases
   it('should return true if the number is between 1 and 8', () => {
     expect(isLuckyNumber(4)).toBe(true);
   });
-
-  // Negative test cases
-  it('should return false if the number is not between 1 and 8', () => {
-    expect(isLuckyNumber(-20)).toBe(false);
-    expect(isLuckyNumber(20)).toBe(false);
-  });
-
   // Negative test cases for invalid input
   it('should return false if the input is not a number', () => {
     expect(isLuckyNumber('1')).toBe(false);
@@ -87,36 +78,18 @@ Let move on to the `isLuckyNumber` function, we can add some boundary value test
 <BlockCode fileName='src/tests/positve-negative.test.js'>
 
 ```javascript
-describe('isLuckyNumber', () => {
-  // Positive test cases
-  it('should return true if the number is between 1 and 8', () => {
-    expect(isLuckyNumber(4)).toBe(true);
-  });
-  // Boundary value positive test cases
+describe('boundary testing test cases', () => {
   it('should return true if the number is 1', () => {
     expect(isLuckyNumber(1)).toBe(true);
   });
   it('should return true if the number is 8', () => {
     expect(isLuckyNumber(8)).toBe(true);
   });
-
-  // Negative test cases
-  it('should return false if the number is not between 1 and 8', () => {
-    expect(isLuckyNumber(-20)).toBe(false);
-    expect(isLuckyNumber(20)).toBe(false);
-  });
-  // Boundary value negative test cases
   it('should return false if the number is less than 1', () => {
     expect(isLuckyNumber(0)).toBe(false);
   });
   it('should return false if the number is greater than 8', () => {
     expect(isLuckyNumber(9)).toBe(false);
-  });
-
-  // Negative test cases for invalid input
-  it('should return false if the input is not a number', () => {
-    expect(isLuckyNumber('1')).toBe(false);
-    expect(isLuckyNumber(null)).toBe(false);
   });
 });
 ```
@@ -138,22 +111,18 @@ In Vitest, you can use the `test.each` function to create parameterized tests:
 <BlockCode fileName='src/tests/positve-negative.test.js'>
 
 ```javascript
-describe('isLuckyNumber', () => {
+describe('parameterized test cases', () => {
   // Parameterized tests
   test.each([
     { input: 1, scenario: '1', expected: true },
     { input: 4, scenario: 'between 1 and 8', expected: true },
     { input: 8, scenario: '8', expected: true },
-    { input: -20, scenario: 'not between 1 and 8', expected: false },
     { input: 0, scenario: 'less than 1', expected: false },
     { input: 9, scenario: 'greater than 8', expected: false },
     { input: 20, scenario: 'not between 1 and 8', expected: false },
-  ])(
-    'should return $expected if the number is $scenario',
-    ({ input, expected }) => {
-      expect(isLuckyNumber(input)).toBe(expected);
-    }
-  );
+  ])('should return $expected if the number is $scenario', ({ input, expected }) => {
+    expect(isLuckyNumber(input)).toBe(expected);
+  });
 });
 ```
 
@@ -162,7 +131,7 @@ describe('isLuckyNumber', () => {
 You will see the result is the same as the previous test cases and we don't have duplicated code anymore.
 
 <Image
-  src="https://res.cloudinary.com/cloudinaryassets/image/upload/v1714707184/astro-blog/javascript-unit-testing-positive-and-negative-testing/fcedm2k34v9eyp7zrol0.webp"
+  src="https://res.cloudinary.com/dpw0jnwee/image/upload/v1739332648/huyknguyen-blog/unit-test-positive-and-negative-testing/n4s3ynztfaijkl6kw9sd.webp"
   alt="Parameterized tests in Vitest"
   height="1922"
   width="1512"
@@ -199,14 +168,14 @@ npm run test-ui
 Open the browser and you will see the Vitest UI. Click on the `Coverage` tab to see the code coverage report.
 
 <Image
-  src="https://res.cloudinary.com/cloudinaryassets/image/upload/v1714707184/astro-blog/javascript-unit-testing-positive-and-negative-testing/cxicgu0j13ewowrjwtfy.webp"
+  src="https://res.cloudinary.com/dpw0jnwee/image/upload/v1739332648/huyknguyen-blog/unit-test-positive-and-negative-testing/u9aeie0qkicjawzonniw.webp"
   alt="Vitest test results"
   height="2244"
   width="1090"
 />
 
 <Image
-  src="https://res.cloudinary.com/cloudinaryassets/image/upload/v1714707184/astro-blog/javascript-unit-testing-positive-and-negative-testing/k181zlrwoovasj42iwog.webp"
+  src="https://res.cloudinary.com/dpw0jnwee/image/upload/v1739332649/huyknguyen-blog/unit-test-positive-and-negative-testing/hcnvxt0i4isewoa7uc5h.webp"
   alt="Vitest test coverage report"
   height="2422"
   width="962"
@@ -217,7 +186,7 @@ Vitest will generate a coverage report in the `coverage` directory. You can add 
 Try to remove some very end test cases for `testing the input is not a number` and run the test again:
 
 <Image
-  src="https://res.cloudinary.com/cloudinaryassets/image/upload/v1714707184/astro-blog/javascript-unit-testing-positive-and-negative-testing/ir8uj7w47ebet3tu7cet.webp"
+  src="https://res.cloudinary.com/dpw0jnwee/image/upload/v1739332649/huyknguyen-blog/unit-test-positive-and-negative-testing/th3wuxxcuhqjb2lo1qal.webp"
   alt="Vitest test coverage report with missing test cases"
   height="2062"
   width="710"

@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/MarkdownPostLayout.astro
 title: 'Javascript unit testing 101 - Write good assertions'
-pubDate: 2024-05-02
+pubDate: 2025-02-12
 description: 'Learn how to write a good assertion by using matchers in JavaScript unit testing using Vitest.'
 author: Huy K. Nguyen
 featured: true
@@ -25,6 +25,12 @@ It seem easy to write a test case, but it's not easy to write a good test case. 
 
 - A matcher is a function that compares the actual value with the expected value and returns a boolean value (true or false) to indicate if the assertion is true or false.
 
+<BlockCode fileName='pattern'>
+```js 
+expect(actualValue).matcher(expectedValue) // assertion
+```
+</BlockCode>
+
 In a testcase, the assertion is important because it helps you verify that the code works as expected or not.
 
 </Section>
@@ -37,10 +43,10 @@ In Vitest, there are several matchers that you can use to write assertions in yo
 
 ### Equality
 
-- `.toBe` compares **primitive values** or checks referential identity of object instances.
-- `.toEqual` compares recursively all properties of object instances (also known as "deep" equality).
+- `.toBe()` compares **primitive values** or checks referential identity of object instances.
+- `.toEqual()` compares recursively all properties of object instances (also known as "deep" equality).
 
-You can see the difference between `toBe` and `toEqual` in the following example:
+You can see the difference between `toBe()` and `toEqual()` in the following example:
 
 <BlockCode fileName='src/tests/assertions.test.js'>
 ```js
@@ -61,7 +67,7 @@ it('toEqual with objects', () => {
 
 ### Numbers
 
-- `toBeGreaterThan`
+- `toBeGreaterThan()`
 - `toBeGreaterThan()`
 - `toBeGreaterThanOrEqualTo()`
 - `toBeLessThan()`
@@ -80,12 +86,12 @@ it('toCloseTo with floating point numbers', () => {
 
 ### Strings
 
-- `toMatch` compares the actual value with the expected value using a regular expression.
+- `toMatch()` compares the actual value with the expected value using a regular expression.
 
 ### Objects
 
-- `toMatchObject` compares the actual value with the expected value using a partial object.
-- `toHaveProperty` checks if the actual value has the expected property.
+- `toMatchObject()` compares the actual value with the expected value using a partial object.
+- `toHaveProperty()` checks if the actual value has the expected property.
 
 <BlockCode fileName='src/tests/assertions.test.js'>
 ```js
@@ -101,8 +107,8 @@ it('toMatchObject and toHaveProperty', () => {
 
 ### Arrays
 
-- `toHaveLength` checks if the actual value has the expected length.
-- `toContain` checks if the actual value contains the expected value.
+- `toHaveLength()` checks if the actual value has the expected length.
+- `toContain()` checks if the actual value contains the expected value.
 
 <BlockCode fileName='src/tests/assertions.test.js'>
 ```js
